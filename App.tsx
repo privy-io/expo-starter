@@ -1,20 +1,118 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import "react-native-get-random-values";
+import "@ethersproject/shims";
+
+import { StatusBar } from "expo-status-bar";
+import { Button, StyleSheet, TextInput, Text, View } from "react-native";
+import { PrivyProvider, useLoginWithEmail, usePrivy } from "@privy-io/expo";
+import { useState } from "react";
+
+function Content() {
+  const [email] = useState("");
+  const [otp, setOtp] = useState("");
+  const { user, logout } = usePrivy();
+  const { sendCode, loginWithCode } = useLoginWithEmail();
+
+  if (user) {
+    return (
+      <View style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+        <View>
+          <Text style={{ fontWeight: "bold" }}>User ID:</Text>
+          <Text style={{ fontWeight: "normal" }}>{user.id}</Text>
+        </View>
+
+        <View>
+          <Text style={{ fontWeight: "bold" }}>Created at: </Text>
+          <Text style={{ fontWeight: "normal" }}>
+            {new Date(user.created_at).toLocaleTimeString()}
+          </Text>
+        </View>
+
+        <View style={{ marginTop: 20 }}>
+          <Text style={{ fontWeight: "bold" }}>Linked Accounts </Text>
+          <Text
+            style={{ padding: 10, color: "white", backgroundColor: "gray" }}
+          >
+            {JSON.stringify(user.linked_accounts, null, 2)}{" "}
+          </Text>
+        </View>
+
+        <View style={{ width: "100%", backgroundColor: "gray" }}>
+          <Button title="Logout" color="white" onPress={logout} />
+        </View>
+      </View>
+    );
+  }
+
+  return (
+    <>
+      <StatusBar style="auto" />
+
+      <View
+        style={{
+          width: "50%",
+          backgroundColor: "gray",
+          margin: 20,
+          padding: 5,
+        }}
+      >
+        <Button
+          title="Send Code"
+          color="white"
+          onPress={() => sendCode({ email })}
+        />
+      </View>
+
+      <View
+        style={{
+          padding: 20,
+          borderColor: "gray",
+          borderWidth: 1,
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+        }}
+      >
+        <TextInput
+          style={{ padding: 5 }}
+          placeholder="OTP"
+          value={otp}
+          onChangeText={setOtp}
+        />
+
+        <View
+          style={{
+            width: "50%",
+            backgroundColor: "gray",
+            margin: 20,
+            padding: 5,
+          }}
+        >
+          <Button
+            title="Submit Code"
+            color="white"
+            onPress={() => loginWithCode({ code: otp })}
+          />
+        </View>
+      </View>
+    </>
+  );
+}
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.tsx to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <PrivyProvider appId="<your-app-ID>">
+      <View style={styles.container}>
+        <Content />
+      </View>
+    </PrivyProvider>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

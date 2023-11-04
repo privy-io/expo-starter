@@ -28,6 +28,9 @@ expo app.
 ## Run the app
 
 ```sh
+# expo go
+npm start
+
 # ios
 npm run ios
 

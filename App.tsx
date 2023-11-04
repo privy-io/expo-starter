@@ -3,13 +3,22 @@ import "@ethersproject/shims";
 
 import { StatusBar } from "expo-status-bar";
 import { Button, StyleSheet, TextInput, Text, View } from "react-native";
-import { PrivyProvider, useLoginWithEmail, usePrivy } from "@privy-io/expo";
+import {
+  PrivyProvider,
+  useLoginWithEmail,
+  useOAuthFlow,
+  usePrivy,
+} from "@privy-io/expo";
 import { useState } from "react";
+
+const appId = "<your-app-ID>";
 
 function Content() {
   const [email] = useState("");
   const [otp, setOtp] = useState("");
+
   const { user, logout } = usePrivy();
+  const { start } = useOAuthFlow();
   const { sendCode, loginWithCode } = useLoginWithEmail();
 
   if (user) {
@@ -46,6 +55,21 @@ function Content() {
   return (
     <>
       <StatusBar style="auto" />
+
+      <View
+        style={{
+          width: "50%",
+          backgroundColor: "gray",
+          margin: 20,
+          padding: 5,
+        }}
+      >
+        <Button
+          title="Login with google"
+          color="white"
+          onPress={() => start({ provider: "google" })}
+        />
+      </View>
 
       <View
         style={{
@@ -99,8 +123,19 @@ function Content() {
 }
 
 export default function App() {
+  if (appId === "<your-app-ID>") {
+    return (
+      <View style={[styles.container, { gap: 20 }]}>
+        <Text style={{ fontSize: 15, fontStyle: "italic", color: "blue" }}>
+          Fill in your appId prop on{" "}
+        </Text>
+        <Text style={{ fontSize: 20 }}>{"<PrivyProvider />"}</Text>
+      </View>
+    );
+  }
+
   return (
-    <PrivyProvider appId="<your-app-ID>">
+    <PrivyProvider appId={appId}>
       <View style={styles.container}>
         <Content />
       </View>

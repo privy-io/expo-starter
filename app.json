@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "freestanding-expo",
-    "slug": "freestanding-expo",
+    "name": "@privy-io/expo-starter",
+    "slug": "privy-expo-starter",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",

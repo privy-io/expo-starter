@@ -10,7 +10,6 @@
   },
   "dependencies": {
     "@ethersproject/shims": "^5.7.0",
-    "@privy-io/api-base": "^0.4.0",
     "@privy-io/expo": "^0.3.1",
     "expo": "~49.0.15",
     "expo-constants": "^14.4.2",

@@ -1,18 +1,18 @@
 import Constants from "expo-constants";
-import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
-import { Text, TextInput, View } from "react-native";
+import {StatusBar} from "expo-status-bar";
+import React, {useEffect, useState} from "react";
+import {Text, TextInput, View} from "react-native";
 
-import { usePrivy, useLoginWithEmail, useOAuthFlow } from "@privy-io/expo";
+import {usePrivy, useLoginWithEmail, useOAuthFlow} from "@privy-io/expo";
 
-import { Button } from "./Button";
-import { styles } from "./styles";
+import {Button} from "./Button";
+import {styles} from "./styles";
 
 export const LoginScreen = () => {
   const [email, setEmail] = useState(Constants.expoConfig?.extra?.email || "");
   const [code, setCode] = useState("");
 
-  const { user } = usePrivy();
+  const {user} = usePrivy();
   const emailFlow = useLoginWithEmail();
   const oauth = useOAuthFlow();
 
@@ -37,9 +37,9 @@ export const LoginScreen = () => {
   return (
     <View style={styles.container}>
       <Text>Login</Text>
-      <Text style={{ color: "rgba(0,0,0,0.4)", marginVertical: 10 }}>
+      <Text style={{color: "rgba(0,0,0,0.4)", marginVertical: 10}}>
         (OTP state:{" "}
-        <Text style={{ color: "blue" }}>{emailFlow.state.status}</Text>)
+        <Text style={{color: "blue"}}>{emailFlow.state.status}</Text>)
       </Text>
       <StatusBar style="auto" />
 
@@ -52,7 +52,7 @@ export const LoginScreen = () => {
       />
       <Button
         loading={emailFlow.state.status === "sending-code"}
-        onPress={() => emailFlow.sendCode({ email })}
+        onPress={() => emailFlow.sendCode({email})}
       >
         Send Code
       </Button>
@@ -67,20 +67,18 @@ export const LoginScreen = () => {
       <Button
         loading={emailFlow.state.status === "submitting-code"}
         disabled={emailFlow.state.status !== "awaiting-code-input"}
-        onPress={() => emailFlow.loginWithCode({ code })}
+        onPress={() => emailFlow.loginWithCode({code})}
       >
         Login
       </Button>
 
-      <View
-        style={{ display: "flex", flexDirection: "row", gap: 5, margin: 10 }}
-      >
+      <View style={{display: "flex", flexDirection: "row", gap: 5, margin: 10}}>
         {(["github", "google", "discord", "apple"] as const).map((provider) => (
           <View key={provider}>
             <Button
               disabled={oauth.state.status === "loading"}
               loading={oauth.state.status === "loading"}
-              onPress={() => oauth.start({ provider })}
+              onPress={() => oauth.start({provider})}
             >
               {`Login with ${provider}`}
             </Button>

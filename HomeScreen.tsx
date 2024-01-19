@@ -1,5 +1,5 @@
-import React, {useState, useCallback} from 'react';
-import {Text, TextInput, View, ScrollView} from 'react-native';
+import React, {useState, useCallback} from "react";
+import {Text, TextInput, View, ScrollView} from "react-native";
 
 import {
   usePrivy,
@@ -7,25 +7,25 @@ import {
   useEmbeddedWallet,
   getUserEmbeddedWallet,
   PrivyEmbeddedWalletProvider,
-} from '@privy-io/expo';
-import {PrivyUser} from '@privy-io/public-api';
+} from "@privy-io/expo";
+import {PrivyUser} from "@privy-io/public-api";
 
-import {Button} from './Button';
-import {styles} from './styles';
+import {Button} from "./Button";
+import {styles} from "./styles";
 
-const toMainIdentifier = (x: PrivyUser['linked_accounts'][number]) => {
-  if (x.type === 'phone') {
+const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
+  if (x.type === "phone") {
     return x.phoneNumber;
   }
-  if (x.type === 'email' || x.type === 'wallet') {
+  if (x.type === "email" || x.type === "wallet") {
     return x.address;
   }
 
-  if (x.type === 'twitter_oauth' || x.type === 'tiktok_oauth') {
+  if (x.type === "twitter_oauth" || x.type === "tiktok_oauth") {
     return x.username;
   }
 
-  if (x.type === 'custom_auth') {
+  if (x.type === "custom_auth") {
     return x.custom_user_id;
   }
 
@@ -33,8 +33,8 @@ const toMainIdentifier = (x: PrivyUser['linked_accounts'][number]) => {
 };
 
 export const HomeScreen = () => {
-  const [password, setPassword] = useState('');
-  const [chainId, setChainId] = useState('1');
+  const [password, setPassword] = useState("");
+  const [chainId, setChainId] = useState("1");
   const [signedMessages, setSignedMessages] = useState<string[]>([]);
 
   const {logout, user} = usePrivy();
@@ -46,7 +46,7 @@ export const HomeScreen = () => {
     async (provider: PrivyEmbeddedWalletProvider) => {
       try {
         const message = await provider.request({
-          method: 'personal_sign',
+          method: "personal_sign",
           params: [`0x0${Date.now()}`, account?.address],
         });
         if (message) {
@@ -63,7 +63,7 @@ export const HomeScreen = () => {
     async (provider: PrivyEmbeddedWalletProvider, id: string) => {
       try {
         await provider.request({
-          method: 'wallet_switchEthereumChain',
+          method: "wallet_switchEthereumChain",
           params: [{chainId: id}],
         });
         alert(`Chain switched to ${id} successfully`);
@@ -82,12 +82,12 @@ export const HomeScreen = () => {
     <View style={styles.container}>
       <Button onPress={logout}>Logout</Button>
 
-      <View style={{display: 'flex', flexDirection: 'row', gap: 5, margin: 10}}>
-        {(['github', 'google', 'discord', 'apple'] as const).map((provider) => (
+      <View style={{display: "flex", flexDirection: "row", gap: 5, margin: 10}}>
+        {(["github", "google", "discord", "apple"] as const).map((provider) => (
           <View key={provider}>
             <Button
-              disabled={oauth.state.status === 'loading'}
-              loading={oauth.state.status === 'loading'}
+              disabled={oauth.state.status === "loading"}
+              loading={oauth.state.status === "loading"}
               onPress={() => oauth.start({provider})}
             >
               {`Link ${provider}`}
@@ -96,7 +96,7 @@ export const HomeScreen = () => {
         ))}
       </View>
 
-      {wallet.status === 'needs-recovery' && (
+      {wallet.status === "needs-recovery" && (
         <TextInput
           value={password}
           onChangeText={setPassword}
@@ -105,28 +105,32 @@ export const HomeScreen = () => {
         />
       )}
 
-      <ScrollView style={{borderColor: 'rgba(0,0,0,0.1)', borderWidth: 1}}>
+      <ScrollView style={{borderColor: "rgba(0,0,0,0.1)", borderWidth: 1}}>
         <View
           style={{
             padding: 20,
-            display: 'flex',
-            flexDirection: 'column',
+            display: "flex",
+            flexDirection: "column",
             gap: 10,
           }}
         >
           <View>
-            <Text style={{fontWeight: 'bold'}}>User ID</Text>
+            <Text style={{fontWeight: "bold"}}>User ID</Text>
             <Text>{user.id}</Text>
           </View>
 
           <View>
-            <Text style={{fontWeight: 'bold'}}>Linked accounts</Text>
+            <Text style={{fontWeight: "bold"}}>Linked accounts</Text>
             {user?.linked_accounts.length ? (
-              <View style={{display: 'flex', flexDirection: 'column'}}>
+              <View style={{display: "flex", flexDirection: "column"}}>
                 {user?.linked_accounts?.map((m) => (
                   <Text
                     key={m.verified_at}
-                    style={{color: 'rgba(0,0,0,0.5)', fontSize: 12, fontStyle: 'italic'}}
+                    style={{
+                      color: "rgba(0,0,0,0.5)",
+                      fontSize: 12,
+                      fontStyle: "italic",
+                    }}
                   >
                     {m.type}: {toMainIdentifier(m)}
                   </Text>
@@ -138,24 +142,26 @@ export const HomeScreen = () => {
           <View>
             {account?.address && (
               <>
-                <Text style={{fontWeight: 'bold'}}>Embedded Wallet</Text>
+                <Text style={{fontWeight: "bold"}}>Embedded Wallet</Text>
                 <Text>{account?.address}</Text>
               </>
             )}
 
-            {wallet.status === 'connecting' && <Text>Loading wallet...</Text>}
+            {wallet.status === "connecting" && <Text>Loading wallet...</Text>}
 
-            {wallet.status === 'error' && <Text>{wallet.error}</Text>}
+            {wallet.status === "error" && <Text>{wallet.error}</Text>}
 
-            {wallet.status === 'not-created' && (
+            {wallet.status === "not-created" && (
               <Button onPress={() => wallet.create()}>Create Wallet</Button>
             )}
 
-            {wallet.status === 'connected' && (
-              <Button onPress={() => signMessage(wallet.provider)}>Sign Message</Button>
+            {wallet.status === "connected" && (
+              <Button onPress={() => signMessage(wallet.provider)}>
+                Sign Message
+              </Button>
             )}
 
-            {wallet.status === 'connected' && (
+            {wallet.status === "connected" && (
               <>
                 <TextInput
                   value={chainId}
@@ -163,26 +169,36 @@ export const HomeScreen = () => {
                   placeholder="Chain Id"
                   style={styles.inputSm}
                 />
-                <Button onPress={() => switchChain(wallet.provider, chainId)}>Switch Chain</Button>
+                <Button onPress={() => switchChain(wallet.provider, chainId)}>
+                  Switch Chain
+                </Button>
               </>
             )}
 
-            {wallet.status === 'needs-recovery' && (
-              <Button onPress={() => wallet.recover(password)}>Recover Wallet</Button>
+            {wallet.status === "needs-recovery" && (
+              <Button onPress={() => wallet.recover(password)}>
+                Recover Wallet
+              </Button>
             )}
           </View>
 
-          <View style={{display: 'flex', flexDirection: 'column'}}>
+          <View style={{display: "flex", flexDirection: "column"}}>
             {signedMessages.map((m) => (
               <React.Fragment key={m}>
-                <Text style={{color: 'rgba(0,0,0,0.5)', fontSize: 12, fontStyle: 'italic'}}>
+                <Text
+                  style={{
+                    color: "rgba(0,0,0,0.5)",
+                    fontSize: 12,
+                    fontStyle: "italic",
+                  }}
+                >
                   {m}
                 </Text>
                 <View
                   style={{
                     marginVertical: 5,
                     borderBottomWidth: 1,
-                    borderBottomColor: 'rgba(0,0,0,0.2)',
+                    borderBottomColor: "rgba(0,0,0,0.2)",
                   }}
                 />
               </React.Fragment>

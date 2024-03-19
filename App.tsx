@@ -8,9 +8,10 @@ import {SafeAreaView, View, Text} from "react-native";
 import {PrivyProvider} from "@privy-io/expo";
 
 import {Wrapper} from "./Wrapper";
-import {createConfig, http} from "wagmi";
+import {WagmiProvider, createConfig, http} from "wagmi";
 import {mainnet, sepolia} from "viem/chains";
 import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
+import { EmbeddedWalletProvider } from "./Wagmi";
 
 const queryClient = new QueryClient();
 
@@ -43,11 +44,13 @@ export default function App() {
   return (
     <PrivyProvider appId={Constants.expoConfig?.extra?.privyAppId}>
       <QueryClientProvider client={queryClient}>
-        <SafeAreaView style={{flex: 1, margin: 10}}>
-          
-          <Wrapper />
-          
-        </SafeAreaView>
+        <WagmiProvider config={config}>
+          <EmbeddedWalletProvider>
+            <SafeAreaView style={{flex: 1, margin: 10}}>
+              <Wrapper />
+            </SafeAreaView>
+          </EmbeddedWalletProvider>
+        </WagmiProvider>
       </QueryClientProvider>
     </PrivyProvider>
   );

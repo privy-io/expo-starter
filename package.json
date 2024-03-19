@@ -20,9 +20,11 @@
     "expo-web-browser": "~12.3.2",
     "fast-text-encoding": "^1.0.6",
     "react": "18.2.0",
-    "react-native": "0.72.10",
-    "react-native-get-random-values": "~1.9.0",
-    "react-native-webview": "13.2.2"
+    "react-native": "0.72.6",
+    "react-native-get-random-values": "^1.11.0",
+    "react-native-webview": "13.2.2",
+    "viem": "^2.8.13",
+    "wagmi": "^2.5.11"
   },
   "devDependencies": {
     "@babel/core": "^7.20.0",

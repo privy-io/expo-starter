@@ -1,6 +1,16 @@
+Object.assign(window, {
+  addEventListener: () => 0,
+  removeEventListener: () => {},
+  dispatchEvent: () => true,
+  CustomEvent: class CustomEvent {} as any,
+});
+
 import "fast-text-encoding";
+import "node-libs-expo/globals";
+import "react-native-url-polyfill/auto";
 import "react-native-get-random-values";
 import "@ethersproject/shims";
+
 import Constants from "expo-constants";
 import React from "react";
 import {SafeAreaView, View, Text} from "react-native";
@@ -10,8 +20,8 @@ import {PrivyProvider} from "@privy-io/expo";
 import {Wrapper} from "./Wrapper";
 import {WagmiProvider, createConfig, http} from "wagmi";
 import {mainnet, sepolia} from "viem/chains";
-import { QueryClientProvider, QueryClient } from "@tanstack/react-query";
-import { EmbeddedWalletProvider } from "./Wagmi";
+import {QueryClientProvider, QueryClient} from "@tanstack/react-query";
+import {EmbeddedWalletProvider} from "./Wagmi";
 
 const queryClient = new QueryClient();
 

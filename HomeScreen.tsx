@@ -1,5 +1,7 @@
 import React, {useState, useCallback} from "react";
 import {Text, TextInput, View, ScrollView} from "react-native";
+import {useSwitchChain, useChainId} from "wagmi";
+import {PrivyUser} from "@privy-io/public-api";
 
 import {
   usePrivy,
@@ -8,7 +10,6 @@ import {
   getUserEmbeddedWallet,
   PrivyEmbeddedWalletProvider,
 } from "@privy-io/expo";
-import {PrivyUser} from "@privy-io/public-api";
 
 import {Button} from "./Button";
 import {styles} from "./styles";
@@ -36,6 +37,9 @@ export const HomeScreen = () => {
   const [password, setPassword] = useState("");
   const [chainId, setChainId] = useState("1");
   const [signedMessages, setSignedMessages] = useState<string[]>([]);
+
+  const {chains, switchChain: switchChainWagmi} = useSwitchChain();
+  const chainIdWagmi = useChainId();
 
   const {logout, user} = usePrivy();
   const oauth = useOAuthFlow();
@@ -164,12 +168,18 @@ export const HomeScreen = () => {
             {wallet.status === "connected" && (
               <>
                 <TextInput
-                  value={chainId}
+                  value={chainIdWagmi.toString()}
                   onChangeText={setChainId}
                   placeholder="Chain Id"
                   style={styles.inputSm}
                 />
-                <Button onPress={() => switchChain(wallet.provider, chainId)}>
+                <Button
+                  // onPress={() => switchChain(wallet.provider, chainId)}
+                  onPress={() => {
+                    const newId = chains.find((c) => c.id !== chainIdWagmi)?.id;
+                    if (newId) switchChainWagmi({chainId: newId});
+                  }}
+                >
                   Switch Chain
                 </Button>
               </>

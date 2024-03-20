@@ -1,6 +1,11 @@
 import React, {useState, useCallback} from "react";
 import {Text, TextInput, View, ScrollView} from "react-native";
-import {useSwitchChain, useChainId, useSignMessage} from "wagmi";
+import {
+  useSwitchChain,
+  useChainId,
+  useSignMessage,
+  useSendTransaction,
+} from "wagmi";
 import {PrivyUser} from "@privy-io/public-api";
 
 import {
@@ -8,11 +13,13 @@ import {
   useOAuthFlow,
   useEmbeddedWallet,
   getUserEmbeddedWallet,
-  PrivyEmbeddedWalletProvider,
 } from "@privy-io/expo";
 
 import {Button} from "./Button";
 import {styles} from "./styles";
+import {parseEther} from "viem";
+
+const toAddress = "0x-my-wallet";
 
 const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
   if (x.type === "phone") {
@@ -36,10 +43,10 @@ const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
 export const HomeScreen = () => {
   const [password, setPassword] = useState("");
 
+  const {sendTransaction, data: txData, error: txError} = useSendTransaction();
+  const {signMessage, data: signedMessage} = useSignMessage();
   const {chains, switchChain} = useSwitchChain();
   const chainId = useChainId();
-
-  const {signMessage, data: signedMessage} = useSignMessage();
 
   const {logout, user} = usePrivy();
   const oauth = useOAuthFlow();
@@ -152,9 +159,64 @@ export const HomeScreen = () => {
                   ))}
                 </View>
 
+                <Button
+                  onPress={() =>
+                    sendTransaction({
+                      to: toAddress,
+                      value: parseEther("0.0001"),
+                    })
+                  }
+                >
+                  Send to 0x844
+                </Button>
+
+                <View style={{display: "flex", flexDirection: "column"}}>
+                  {[txData || txError?.message].map((m) => {
+                    if (!m) return null;
+
+                    return (
+                      <React.Fragment key={m}>
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            fontStyle: "italic",
+                            marginVertical: 5,
+                            color: txError
+                              ? "rgba(255,0,0,0.5)"
+                              : "rgba(0,0,0,0.5)",
+                          }}
+                        >
+                          {m}
+                        </Text>
+                      </React.Fragment>
+                    );
+                  })}
+                </View>
+
                 <Button onPress={() => signMessage({message: "Yo broski"})}>
                   Sign Message
                 </Button>
+
+                <View style={{display: "flex", flexDirection: "column"}}>
+                  {[signedMessage].map((m) => {
+                    if (!m) return null;
+
+                    return (
+                      <React.Fragment key={m}>
+                        <Text
+                          style={{
+                            color: "rgba(0,0,0,0.5)",
+                            fontSize: 12,
+                            fontStyle: "italic",
+                            marginVertical: 5,
+                          }}
+                        >
+                          {m}
+                        </Text>
+                      </React.Fragment>
+                    );
+                  })}
+                </View>
               </>
             )}
 
@@ -163,27 +225,6 @@ export const HomeScreen = () => {
                 Recover Wallet
               </Button>
             )}
-          </View>
-
-          <View style={{display: "flex", flexDirection: "column"}}>
-            {[signedMessage].map((m) => {
-              if (!m) return null;
-
-              return (
-                <React.Fragment key={m}>
-                  <Text
-                    style={{
-                      color: "rgba(0,0,0,0.5)",
-                      fontSize: 12,
-                      fontStyle: "italic",
-                      marginVertical: 5,
-                    }}
-                  >
-                    {m}
-                  </Text>
-                </React.Fragment>
-              );
-            })}
           </View>
         </View>
       </ScrollView>

@@ -1,6 +1,6 @@
 import React, {useState, useCallback} from "react";
 import {Text, TextInput, View, ScrollView} from "react-native";
-import {useSwitchChain, useChainId} from "wagmi";
+import {useSwitchChain, useChainId, useSignMessage} from "wagmi";
 import {PrivyUser} from "@privy-io/public-api";
 
 import {
@@ -35,48 +35,16 @@ const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
 
 export const HomeScreen = () => {
   const [password, setPassword] = useState("");
-  const [chainId, setChainId] = useState("1");
-  const [signedMessages, setSignedMessages] = useState<string[]>([]);
 
-  const {chains, switchChain: switchChainWagmi} = useSwitchChain();
-  const chainIdWagmi = useChainId();
+  const {chains, switchChain} = useSwitchChain();
+  const chainId = useChainId();
+
+  const {signMessage, data: signedMessage} = useSignMessage();
 
   const {logout, user} = usePrivy();
   const oauth = useOAuthFlow();
   const wallet = useEmbeddedWallet();
   const account = getUserEmbeddedWallet(user);
-
-  const signMessage = useCallback(
-    async (provider: PrivyEmbeddedWalletProvider) => {
-      try {
-        const message = await provider.request({
-          method: "personal_sign",
-          params: [`0x0${Date.now()}`, account?.address],
-        });
-        if (message) {
-          setSignedMessages((prev) => prev.concat(message));
-        }
-      } catch (e) {
-        console.error(e);
-      }
-    },
-    [account?.address],
-  );
-
-  const switchChain = useCallback(
-    async (provider: PrivyEmbeddedWalletProvider, id: string) => {
-      try {
-        await provider.request({
-          method: "wallet_switchEthereumChain",
-          params: [{chainId: id}],
-        });
-        alert(`Chain switched to ${id} successfully`);
-      } catch (e) {
-        console.error(e);
-      }
-    },
-    [account?.address],
-  );
 
   if (!user) {
     return null;
@@ -160,27 +128,32 @@ export const HomeScreen = () => {
             )}
 
             {wallet.status === "connected" && (
-              <Button onPress={() => signMessage(wallet.provider)}>
-                Sign Message
-              </Button>
-            )}
-
-            {wallet.status === "connected" && (
               <>
-                <TextInput
-                  value={chainIdWagmi.toString()}
-                  onChangeText={setChainId}
-                  placeholder="Chain Id"
-                  style={styles.inputSm}
-                />
-                <Button
-                  // onPress={() => switchChain(wallet.provider, chainId)}
-                  onPress={() => {
-                    const newId = chains.find((c) => c.id !== chainIdWagmi)?.id;
-                    if (newId) switchChainWagmi({chainId: newId});
+                <View
+                  style={{
+                    display: "flex",
+                    flexDirection: "row",
+                    gap: 5,
+                    margin: 10,
                   }}
                 >
-                  Switch Chain
+                  {chains.map((chain) => (
+                    <View key={chain.id}>
+                      <Button
+                        onPress={() => switchChain({chainId: chain.id})}
+                        style={{
+                          backgroundColor:
+                            chainId === chain.id ? "lightgreen" : undefined,
+                        }}
+                      >
+                        {`${chain.name} (${chain.id})`}
+                      </Button>
+                    </View>
+                  ))}
+                </View>
+
+                <Button onPress={() => signMessage({message: "Yo broski"})}>
+                  Sign Message
                 </Button>
               </>
             )}
@@ -193,26 +166,24 @@ export const HomeScreen = () => {
           </View>
 
           <View style={{display: "flex", flexDirection: "column"}}>
-            {signedMessages.map((m) => (
-              <React.Fragment key={m}>
-                <Text
-                  style={{
-                    color: "rgba(0,0,0,0.5)",
-                    fontSize: 12,
-                    fontStyle: "italic",
-                  }}
-                >
-                  {m}
-                </Text>
-                <View
-                  style={{
-                    marginVertical: 5,
-                    borderBottomWidth: 1,
-                    borderBottomColor: "rgba(0,0,0,0.2)",
-                  }}
-                />
-              </React.Fragment>
-            ))}
+            {[signedMessage].map((m) => {
+              if (!m) return null;
+
+              return (
+                <React.Fragment key={m}>
+                  <Text
+                    style={{
+                      color: "rgba(0,0,0,0.5)",
+                      fontSize: 12,
+                      fontStyle: "italic",
+                      marginVertical: 5,
+                    }}
+                  >
+                    {m}
+                  </Text>
+                </React.Fragment>
+              );
+            })}
           </View>
         </View>
       </ScrollView>

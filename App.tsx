@@ -19,17 +19,18 @@ import {PrivyProvider} from "@privy-io/expo";
 
 import {Wrapper} from "./Wrapper";
 import {WagmiProvider, createConfig, http} from "wagmi";
-import {mainnet, sepolia} from "viem/chains";
+import {goerli, mainnet, sepolia} from "viem/chains";
 import {QueryClientProvider, QueryClient} from "@tanstack/react-query";
 import {EmbeddedWalletProvider} from "./Wagmi";
 
 const queryClient = new QueryClient();
 
 export const config = createConfig({
-  chains: [mainnet, sepolia], // Pass your required chains as an array
+  chains: [mainnet, sepolia, goerli], // Pass your required chains as an array
   transports: {
     [mainnet.id]: http(),
     [sepolia.id]: http(),
+    [goerli.id]: http(),
     // For each of your required chains, add an entry to `transports` with
     // a key of the chain's `id` and a value of `http()`
   },

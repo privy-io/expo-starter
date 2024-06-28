@@ -15,11 +15,11 @@
     },
     "assetBundlePatterns": ["**/*"],
     "ios": {
-      "bundleIdentifier": "com.privy.expo",
+      "bundleIdentifier": "com.jainil.expo",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.privy.expo",
+      "package": "com.jainil.expo",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -29,7 +29,7 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "privyAppId": "<your-app-id>"
+      "privyAppId": "clwuz57hc0a7xpjf6yz2a566i"
     }
   }
 }

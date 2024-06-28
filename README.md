@@ -11,18 +11,14 @@ expo app.
    npm i
    ```
 
-1. Add your Privy app ID in `App.js`
+1. Add your Privy app ID in `app.json`
 
-   ```jsx
-   export default function App() {
-     return (
-       <PrivyProvider appId="<your-privy-app-id>">
-         <View style={styles.container}>
-           <Content />
-         </View>
-       </PrivyProvider>
-     );
-   }
+   ```json
+   ...
+    "extra": {
+      "privyAppId": "<your-app-id>"
+    }
+   ...
    ```
 
 ## Run the app

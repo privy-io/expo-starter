@@ -13,7 +13,9 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "bundleIdentifier": "com.jainil.expo",
       "supportsTablet": true
@@ -30,6 +32,9 @@
     },
     "extra": {
       "privyAppId": "clwuz57hc0a7xpjf6yz2a566i"
-    }
+    },
+    "plugins": [
+      "expo-secure-store"
+    ]
   }
 }

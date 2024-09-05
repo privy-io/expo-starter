@@ -3,7 +3,7 @@ import {StatusBar} from "expo-status-bar";
 import React, {useEffect, useState} from "react";
 import {Text, TextInput, View} from "react-native";
 
-import {usePrivy, useLoginWithEmail, useOAuthFlow} from "@privy-io/expo";
+import {usePrivy, useLoginWithEmail, useLoginWithOAuth} from "@privy-io/expo";
 
 import {Button} from "./Button";
 import {styles} from "./styles";
@@ -14,7 +14,7 @@ export const LoginScreen = () => {
 
   const {user} = usePrivy();
   const emailFlow = useLoginWithEmail();
-  const oauth = useOAuthFlow();
+  const oauth = useLoginWithOAuth();
 
   // Side effects which react to login state changes
   useEffect(() => {

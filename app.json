@@ -17,11 +17,11 @@
       "**/*"
     ],
     "ios": {
-      "bundleIdentifier": "com.jainil.expo",
+      "bundleIdentifier": "io.privy.expo",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.jainil.expo",
+      "package": "io.privy.expo",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -31,7 +31,7 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "privyAppId": "clwuz57hc0a7xpjf6yz2a566i"
+      "privyAppId": "<enter your app id>"
     },
     "plugins": [
       "expo-secure-store"

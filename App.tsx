@@ -26,7 +26,10 @@ export default function App() {
     );
   }
   return (
-    <PrivyProvider appId={Constants.expoConfig?.extra?.privyAppId}>
+    <PrivyProvider
+      appId={Constants.expoConfig?.extra?.privyAppId}
+      clientId={Constants.expoConfig?.extra?.privyClientId}
+    >
       <SafeAreaView style={{flex: 1, margin: 10}}>
         <Wrapper />
       </SafeAreaView>

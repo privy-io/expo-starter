@@ -13,15 +13,13 @@
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "bundleIdentifier": "com.jainil.expo",
+      "bundleIdentifier": "io.example.expo",
       "supportsTablet": true
     },
     "android": {
-      "package": "com.jainil.expo",
+      "package": "io.example.expo",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
@@ -31,10 +29,9 @@
       "favicon": "./assets/favicon.png"
     },
     "extra": {
-      "privyAppId": "clwuz57hc0a7xpjf6yz2a566i"
+      "privyAppId": "<enter your app id>",
+      "privyClientId": "<enter your client id>"
     },
-    "plugins": [
-      "expo-secure-store"
-    ]
+    "plugins": ["expo-secure-store"]
   }
 }

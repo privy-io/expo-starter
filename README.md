@@ -1,48 +1,50 @@
-# Privy Expo Starter
+# Welcome to your Expo app 👋
 
-This demonstrates a minimal working installation of the privy sdk in a fresh expo app. We recommend reading the [documentation](https://docs.privy.io/guide/expo/dashboard) for a more detailed guide.
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
 
-## Setup
+## Get started
 
 1. Install dependencies
 
-   ```sh
-   npm i
+   ```bash
+   npm install
    ```
 
-2. Configure an app client in your [dashboard](https://dashboard.privy.io/apps?page=settings&setting=client), and add your Privy app ID and app client ID in `app.json`
+2. Start the app
 
-   ```json
-   ...
-    "extra": {
-      "privyAppId": "<your-app-id>",
-      "privyClientId": "<your-client-id>"
-    }
-   ...
+   ```bash
+    npx expo start
    ```
 
-3. Configure your application identifier in `app.json`. This should match the bundle identifier for your app in the app store.
+In the output, you'll find options to open the app in a
 
-   ```json
-   ...
-    "ios": {
-      "bundleIdentifier": "com.example.myapp"
-    },
-    "android": {
-      "package": "com.example.myapp"
-    }
-   ...
-   ```
+- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
+- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
+- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
+- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
 
-## Run the app
+You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
 
-```sh
-# expo go
-npm start
+## Get a fresh project
 
-# ios
-npm run ios
+When you're ready, run:
 
-# android
-npm run android
+```bash
+npm run reset-project
 ```
+
+This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
+
+## Learn more
+
+To learn more about developing your project with Expo, look at the following resources:
+
+- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
+- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+
+## Join the community
+
+Join our community of developers creating universal apps.
+
+- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
+- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.

@@ -1,37 +1,63 @@
 {
   "expo": {
-    "name": "@privy-io/expo-starter",
-    "slug": "privy-expo-starter",
+    "name": "expo-starter-2",
+    "slug": "expo-starter-2",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
-    "userInterfaceStyle": "light",
-    "jsEngine": "hermes",
-    "scheme": "privy-expo",
+    "icon": "./assets/images/icon.png",
+    "scheme": "myapp",
+    "userInterfaceStyle": "automatic",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/images/splash.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
-    "assetBundlePatterns": ["**/*"],
     "ios": {
-      "bundleIdentifier": "io.example.expo",
-      "supportsTablet": true
-    },
-    "android": {
-      "package": "io.example.expo",
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#ffffff"
+      "usesAppleSignIn": true,
+      "supportsTablet": true,
+      "bundleIdentifier": "dev.privy.expo",
+      "associatedDomains": ["webcredentials:demo.privy.dev"],
+      "infoPlist": {
+        "NSAppTransportSecurity": {
+          "NSAllowsArbitraryLoads": true
+        }
       }
     },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/adaptive-icon.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "dev.privy.expo"
+    },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "bundler": "metro",
+      "output": "static",
+      "favicon": "./assets/images/favicon.png"
     },
     "extra": {
-      "privyAppId": "<enter your app id>",
-      "privyClientId": "<enter your client id>"
+      "privyAppId": "clasv4sso0008lb08yk5mvmk0",
+      "privyClientId": "client-WY2RuktPo959W8YVuVEb1cTGkBxG3vsD8mLEkXGfT4Wk8"
     },
-    "plugins": ["expo-secure-store"]
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      "expo-apple-authentication",
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "17.5"
+          },
+          "android": {
+            "compileSdkVersion": 34
+          }
+        }
+      ],
+      "expo-font"
+    ],
+    "experiments": {
+      "typedRoutes": true
+    }
   }
 }

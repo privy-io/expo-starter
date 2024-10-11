@@ -1,5 +1,5 @@
-import React, {useState, useCallback} from "react";
-import {Text, TextInput, View, ScrollView} from "react-native";
+import React, { useState, useCallback } from "react";
+import { Text, TextInput, View, Button, ScrollView } from "react-native";
 
 import {
   usePrivy,
@@ -8,10 +8,10 @@ import {
   getUserEmbeddedWallet,
   PrivyEmbeddedWalletProvider,
 } from "@privy-io/expo";
-import {PrivyUser} from "@privy-io/public-api";
+import { useLinkWithPasskey } from "@privy-io/expo/passkey";
+import { PrivyUser } from "@privy-io/public-api";
 
-import {Button} from "./Button";
-import {styles} from "./styles";
+//import { styles } from "./styles";
 
 const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
   if (x.type === "phone") {
@@ -29,15 +29,16 @@ const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
     return x.custom_user_id;
   }
 
-  return x.email;
+  return x.type;
 };
 
-export const HomeScreen = () => {
+export const UserScreen = () => {
   const [password, setPassword] = useState("");
   const [chainId, setChainId] = useState("1");
   const [signedMessages, setSignedMessages] = useState<string[]>([]);
 
-  const {logout, user} = usePrivy();
+  const { logout, user } = usePrivy();
+  const { linkWithPasskey } = useLinkWithPasskey();
   const oauth = useOAuthFlow();
   const wallet = useEmbeddedWallet();
   const account = getUserEmbeddedWallet(user);
@@ -56,7 +57,7 @@ export const HomeScreen = () => {
         console.error(e);
       }
     },
-    [account?.address],
+    [account?.address]
   );
 
   const switchChain = useCallback(
@@ -64,14 +65,14 @@ export const HomeScreen = () => {
       try {
         await provider.request({
           method: "wallet_switchEthereumChain",
-          params: [{chainId: id}],
+          params: [{ chainId: id }],
         });
         alert(`Chain switched to ${id} successfully`);
       } catch (e) {
         console.error(e);
       }
     },
-    [account?.address],
+    [account?.address]
   );
 
   if (!user) {
@@ -79,19 +80,21 @@ export const HomeScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
-      <Button onPress={logout}>Logout</Button>
-
-      <View style={{display: "flex", flexDirection: "row", gap: 5, margin: 10}}>
+    <View>
+      <Button
+        title="Link Passkey"
+        onPress={() =>
+          linkWithPasskey({ relyingParty: "https://demo.privy.dev" })
+        }
+      />
+      <View style={{ display: "flex", flexDirection: "column", margin: 10 }}>
         {(["github", "google", "discord", "apple"] as const).map((provider) => (
           <View key={provider}>
             <Button
+              title={`Link ${provider}`}
               disabled={oauth.state.status === "loading"}
-              loading={oauth.state.status === "loading"}
-              onPress={() => oauth.start({provider})}
-            >
-              {`Link ${provider}`}
-            </Button>
+              onPress={() => oauth.start({ provider })}
+            ></Button>
           </View>
         ))}
       </View>
@@ -101,11 +104,10 @@ export const HomeScreen = () => {
           value={password}
           onChangeText={setPassword}
           placeholder="Password"
-          style={styles.input}
         />
       )}
 
-      <ScrollView style={{borderColor: "rgba(0,0,0,0.1)", borderWidth: 1}}>
+      <ScrollView style={{ borderColor: "rgba(0,0,0,0.1)", borderWidth: 1 }}>
         <View
           style={{
             padding: 20,
@@ -115,14 +117,14 @@ export const HomeScreen = () => {
           }}
         >
           <View>
-            <Text style={{fontWeight: "bold"}}>User ID</Text>
+            <Text style={{ fontWeight: "bold" }}>User ID</Text>
             <Text>{user.id}</Text>
           </View>
 
           <View>
-            <Text style={{fontWeight: "bold"}}>Linked accounts</Text>
+            <Text style={{ fontWeight: "bold" }}>Linked accounts</Text>
             {user?.linked_accounts.length ? (
-              <View style={{display: "flex", flexDirection: "column"}}>
+              <View style={{ display: "flex", flexDirection: "column" }}>
                 {user?.linked_accounts?.map((m) => (
                   <Text
                     key={m.verified_at}
@@ -142,7 +144,7 @@ export const HomeScreen = () => {
           <View>
             {account?.address && (
               <>
-                <Text style={{fontWeight: "bold"}}>Embedded Wallet</Text>
+                <Text style={{ fontWeight: "bold" }}>Embedded Wallet</Text>
                 <Text>{account?.address}</Text>
               </>
             )}
@@ -152,13 +154,14 @@ export const HomeScreen = () => {
             {wallet.status === "error" && <Text>{wallet.error}</Text>}
 
             {wallet.status === "not-created" && (
-              <Button onPress={() => wallet.create()}>Create Wallet</Button>
+              <Button title="Create Wallet" onPress={() => wallet.create()} />
             )}
 
             {wallet.status === "connected" && (
-              <Button onPress={() => signMessage(wallet.provider)}>
-                Sign Message
-              </Button>
+              <Button
+                title="Sign Message"
+                onPress={() => signMessage(wallet.provider)}
+              />
             )}
 
             {wallet.status === "connected" && (
@@ -167,22 +170,23 @@ export const HomeScreen = () => {
                   value={chainId}
                   onChangeText={setChainId}
                   placeholder="Chain Id"
-                  style={styles.inputSm}
                 />
-                <Button onPress={() => switchChain(wallet.provider, chainId)}>
-                  Switch Chain
-                </Button>
+                <Button
+                  title="Switch Chain"
+                  onPress={() => switchChain(wallet.provider, chainId)}
+                />
               </>
             )}
 
             {wallet.status === "needs-recovery" && (
-              <Button onPress={() => wallet.recover(password)}>
-                Recover Wallet
-              </Button>
+              <Button
+                title="Recover Wallet"
+                onPress={() => wallet.recover(password)}
+              />
             )}
           </View>
 
-          <View style={{display: "flex", flexDirection: "column"}}>
+          <View style={{ display: "flex", flexDirection: "column" }}>
             {signedMessages.map((m) => (
               <React.Fragment key={m}>
                 <Text
@@ -204,6 +208,7 @@ export const HomeScreen = () => {
               </React.Fragment>
             ))}
           </View>
+          <Button title="Logout" onPress={logout} />
         </View>
       </ScrollView>
     </View>

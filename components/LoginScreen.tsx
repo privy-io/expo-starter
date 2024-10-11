@@ -93,7 +93,7 @@ export default function LoginScreen() {
         title="Login using Passkey"
         onPress={() =>
           loginWithPasskey({
-            relyingParty: "https://demo.privy.dev",
+            relyingParty: Constants.expoConfig?.extra?.passkeyAssociatedDomain,
           })
         }
       />

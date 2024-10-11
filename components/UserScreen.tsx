@@ -8,10 +8,9 @@ import {
   getUserEmbeddedWallet,
   PrivyEmbeddedWalletProvider,
 } from "@privy-io/expo";
+import Constants from "expo-constants";
 import { useLinkWithPasskey } from "@privy-io/expo/passkey";
 import { PrivyUser } from "@privy-io/public-api";
-
-//import { styles } from "./styles";
 
 const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
   if (x.type === "phone") {
@@ -84,7 +83,9 @@ export const UserScreen = () => {
       <Button
         title="Link Passkey"
         onPress={() =>
-          linkWithPasskey({ relyingParty: "https://demo.privy.dev" })
+          linkWithPasskey({
+            relyingParty: Constants.expoConfig?.extra?.passkeyAssociatedDomain,
+          })
         }
       />
       <View style={{ display: "flex", flexDirection: "column", margin: 10 }}>

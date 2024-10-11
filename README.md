@@ -34,15 +34,28 @@ This demonstrates a minimal working installation of the privy sdk in a fresh exp
    ...
    ```
 
+4. If you are making use of passkeys, ensure that you have an [associated website](https://docs.privy.io/guide/expo/setup/passkey#_3-update-native-app-settings) for your application. Once you have this your `app.json` should be updated as follows:
+
+   ```json
+   ...
+   "associatedDomains": ["webcredentials:<your-associated-domain>"],
+   ...
+   "extra": {
+      ...
+      "passkeyAssociatedDomain": "https://<your-associated-domain>"
+    },
+   ...
+   ```
+
 ## Run the app
 
 ```sh
 # expo go
-npm start
+npx expo start
 
 # ios
-npm run ios
+npx expo run:ios
 
 # android
-npm run android
+npx expo run:android
 ```

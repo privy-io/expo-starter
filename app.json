@@ -15,8 +15,8 @@
     "ios": {
       "usesAppleSignIn": true,
       "supportsTablet": true,
-      "bundleIdentifier": "dev.privy.expo",
-      "associatedDomains": ["webcredentials:demo.privy.dev"],
+      "bundleIdentifier": "dev.privy.example",
+      "associatedDomains": ["webcredentials:<your-associated-domain>"],
       "infoPlist": {
         "NSAppTransportSecurity": {
           "NSAllowsArbitraryLoads": true
@@ -28,7 +28,7 @@
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "dev.privy.expo"
+      "package": "dev.privy.example"
     },
     "web": {
       "bundler": "metro",
@@ -36,8 +36,8 @@
       "favicon": "./assets/images/favicon.png"
     },
     "extra": {
-      "privyAppId": "clasv4sso0008lb08yk5mvmk0",
-      "privyClientId": "client-WY2RuktPo959W8YVuVEb1cTGkBxG3vsD8mLEkXGfT4Wk8"
+      "privyAppId": "<your-privy-app-id>",
+      "privyClientId": "<your-privy-app-client-id"
     },
     "plugins": [
       "expo-router",

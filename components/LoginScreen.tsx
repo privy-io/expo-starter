@@ -70,7 +70,11 @@ export default function LoginScreen() {
         </Text>{" "}
         and ensure the following value is listed as an `Allowed app URL scheme`:
       </Text>
-      <Text style={{ fontSize: 10 }}>{Constants.expoConfig?.scheme}</Text>
+      <Text style={{ fontSize: 10 }}>
+        {Application.applicationId === "host.exp.Exponent"
+          ? "exp"
+          : Constants.expoConfig?.scheme}
+      </Text>
 
       <Button
         title="Login with Privy UIs"

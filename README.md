@@ -34,7 +34,7 @@ This demonstrates a minimal working installation of the privy sdk in a fresh exp
    ...
    ```
 
-4. If you are making use of passkeys, ensure that you have an [associated website](https://docs.privy.io/guide/expo/setup/passkey#_3-update-native-app-settings) for your application. Once you have an associated domain, make sure that you have updated the `app.json` as follows:
+4. If you are making use of passkeys, ensure that you have an [associated website](https://docs.privy.io/guide/expo/setup/passkey#_3-update-native-app-settings) for your application. Once you have this your `app.json` should be updated as follows:
 
    ```json
    ...

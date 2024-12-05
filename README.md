@@ -20,6 +20,7 @@ This demonstrates a minimal working installation of the privy sdk in a fresh exp
     }
    ...
    ```
+   Make sure to add `host.exp.Exponent` to `Allowed App Identifiers` on the Privy Dashboard
 
 3. Configure your application identifier in `app.json`. This should match the bundle identifier for your app in the app store.
 

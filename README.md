@@ -10,7 +10,7 @@ This demonstrates a minimal working installation of the privy sdk in a fresh exp
    npm i
    ```
 
-2. Configure an app client in your [dashboard](https://dashboard.privy.io/apps?page=settings&setting=client), and add your Privy app ID and app client ID in `app.json`
+2. Configure an app client in your [Dashboard](https://dashboard.privy.io/apps?page=settings&setting=clients), and add your Privy app ID and app client ID in `app.json`
 
    ```json
    ...
@@ -20,6 +20,8 @@ This demonstrates a minimal working installation of the privy sdk in a fresh exp
     }
    ...
    ```
+
+   If you are using Expo go, be sure to add `host.exp.Exponent` to Allowed app identifiers under app clients in your [Dashboard]('https://dashboard.privy.io/apps?page=settings&setting=clients')
 
 3. Configure your application identifier in `app.json`. This should match the bundle identifier for your app in the app store.
 

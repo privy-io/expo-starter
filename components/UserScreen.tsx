@@ -3,10 +3,10 @@ import { Text, TextInput, View, Button, ScrollView } from "react-native";
 
 import {
   usePrivy,
-  useOAuthFlow,
-  useEmbeddedWallet,
-  getUserEmbeddedWallet,
+  useEmbeddedEthereumWallet,
+  getUserEmbeddedEthereumWallet,
   PrivyEmbeddedWalletProvider,
+  useLinkWithOAuth,
 } from "@privy-io/expo";
 import Constants from "expo-constants";
 import { useLinkWithPasskey } from "@privy-io/expo/passkey";
@@ -32,15 +32,14 @@ const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
 };
 
 export const UserScreen = () => {
-  const [password, setPassword] = useState("");
   const [chainId, setChainId] = useState("1");
   const [signedMessages, setSignedMessages] = useState<string[]>([]);
 
   const { logout, user } = usePrivy();
   const { linkWithPasskey } = useLinkWithPasskey();
-  const oauth = useOAuthFlow();
-  const wallet = useEmbeddedWallet();
-  const account = getUserEmbeddedWallet(user);
+  const oauth = useLinkWithOAuth();
+  const { wallets, create } = useEmbeddedEthereumWallet();
+  const account = getUserEmbeddedEthereumWallet(user);
 
   const signMessage = useCallback(
     async (provider: PrivyEmbeddedWalletProvider) => {
@@ -94,19 +93,11 @@ export const UserScreen = () => {
             <Button
               title={`Link ${provider}`}
               disabled={oauth.state.status === "loading"}
-              onPress={() => oauth.start({ provider })}
+              onPress={() => oauth.link({ provider })}
             ></Button>
           </View>
         ))}
       </View>
-
-      {wallet.status === "needs-recovery" && (
-        <TextInput
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Password"
-        />
-      )}
 
       <ScrollView style={{ borderColor: "rgba(0,0,0,0.1)", borderWidth: 1 }}>
         <View
@@ -150,44 +141,31 @@ export const UserScreen = () => {
               </>
             )}
 
-            {wallet.status === "connecting" && <Text>Loading wallet...</Text>}
+            <Button title="Create Wallet" onPress={() => create()} />
 
-            {wallet.status === "error" && <Text>{wallet.error}</Text>}
-
-            {wallet.status === "not-created" && (
-              <Button title="Create Wallet" onPress={() => wallet.create()} />
-            )}
-
-            {wallet.status === "connected" && (
-              <Button
-                title="Sign Message"
-                onPress={() => signMessage(wallet.provider)}
+            <>
+              <Text>Chain ID to set to:</Text>
+              <TextInput
+                value={chainId}
+                onChangeText={setChainId}
+                placeholder="Chain Id"
               />
-            )}
-
-            {wallet.status === "connected" && (
-              <>
-                <TextInput
-                  value={chainId}
-                  onChangeText={setChainId}
-                  placeholder="Chain Id"
-                />
-                <Button
-                  title="Switch Chain"
-                  onPress={() => switchChain(wallet.provider, chainId)}
-                />
-              </>
-            )}
-
-            {wallet.status === "needs-recovery" && (
               <Button
-                title="Recover Wallet"
-                onPress={() => wallet.recover(password)}
+                title="Switch Chain"
+                onPress={async () =>
+                  switchChain(await wallets[0].getProvider(), chainId)
+                }
               />
-            )}
+            </>
           </View>
 
           <View style={{ display: "flex", flexDirection: "column" }}>
+            <Button
+              title="Sign Message"
+              onPress={async () => signMessage(await wallets[0].getProvider())}
+            />
+
+            <Text>Messages signed:</Text>
             {signedMessages.map((m) => (
               <React.Fragment key={m}>
                 <Text

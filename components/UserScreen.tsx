@@ -3,10 +3,11 @@ import { Text, TextInput, View, Button, ScrollView } from "react-native";
 
 import {
   usePrivy,
-  useOAuthFlow,
-  useEmbeddedWallet,
-  getUserEmbeddedWallet,
+  useEmbeddedEthereumWallet,
+  getUserEmbeddedEthereumWallet,
   PrivyEmbeddedWalletProvider,
+  useLinkWithOAuth,
+  useRecoverEmbeddedWallet,
 } from "@privy-io/expo";
 import Constants from "expo-constants";
 import { useLinkWithPasskey } from "@privy-io/expo/passkey";
@@ -31,16 +32,18 @@ const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
   return x.type;
 };
 
-export const UserScreen = () => {
+export const UserScreen = async () => {
   const [password, setPassword] = useState("");
   const [chainId, setChainId] = useState("1");
   const [signedMessages, setSignedMessages] = useState<string[]>([]);
 
   const { logout, user } = usePrivy();
   const { linkWithPasskey } = useLinkWithPasskey();
-  const oauth = useOAuthFlow();
-  const wallet = useEmbeddedWallet();
-  const account = getUserEmbeddedWallet(user);
+  const oauth = useLinkWithOAuth();
+  const { wallets, create } = useEmbeddedEthereumWallet();
+  const { recover } = useRecoverEmbeddedWallet();
+  const embeddedWalletProvider = await wallets[0]?.getProvider();
+  const account = getUserEmbeddedEthereumWallet(user);
 
   const signMessage = useCallback(
     async (provider: PrivyEmbeddedWalletProvider) => {
@@ -94,19 +97,16 @@ export const UserScreen = () => {
             <Button
               title={`Link ${provider}`}
               disabled={oauth.state.status === "loading"}
-              onPress={() => oauth.start({ provider })}
+              onPress={() => oauth.link({ provider })}
             ></Button>
           </View>
         ))}
       </View>
-
-      {wallet.status === "needs-recovery" && (
-        <TextInput
-          value={password}
-          onChangeText={setPassword}
-          placeholder="Password"
-        />
-      )}
+      <TextInput
+        value={password}
+        onChangeText={setPassword}
+        placeholder="Password"
+      />
 
       <ScrollView style={{ borderColor: "rgba(0,0,0,0.1)", borderWidth: 1 }}>
         <View
@@ -150,41 +150,31 @@ export const UserScreen = () => {
               </>
             )}
 
-            {wallet.status === "connecting" && <Text>Loading wallet...</Text>}
+            <Button title="Create Wallet" onPress={() => create()} />
 
-            {wallet.status === "error" && <Text>{wallet.error}</Text>}
+            <Button
+              title="Sign Message"
+              onPress={async () => signMessage(embeddedWalletProvider)}
+            />
 
-            {wallet.status === "not-created" && (
-              <Button title="Create Wallet" onPress={() => wallet.create()} />
-            )}
-
-            {wallet.status === "connected" && (
-              <Button
-                title="Sign Message"
-                onPress={() => signMessage(wallet.provider)}
+            <>
+              <TextInput
+                value={chainId}
+                onChangeText={setChainId}
+                placeholder="Chain Id"
               />
-            )}
-
-            {wallet.status === "connected" && (
-              <>
-                <TextInput
-                  value={chainId}
-                  onChangeText={setChainId}
-                  placeholder="Chain Id"
-                />
-                <Button
-                  title="Switch Chain"
-                  onPress={() => switchChain(wallet.provider, chainId)}
-                />
-              </>
-            )}
-
-            {wallet.status === "needs-recovery" && (
               <Button
-                title="Recover Wallet"
-                onPress={() => wallet.recover(password)}
+                title="Switch Chain"
+                onPress={() => switchChain(embeddedWalletProvider, chainId)}
               />
-            )}
+            </>
+
+            <Button
+              title="Recover Wallet"
+              onPress={() =>
+                recover({ recoveryMethod: "user-passcode", password })
+              }
+            />
           </View>
 
           <View style={{ display: "flex", flexDirection: "column" }}>

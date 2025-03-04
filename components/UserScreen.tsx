@@ -7,7 +7,6 @@ import {
   getUserEmbeddedEthereumWallet,
   PrivyEmbeddedWalletProvider,
   useLinkWithOAuth,
-  useRecoverEmbeddedWallet,
 } from "@privy-io/expo";
 import Constants from "expo-constants";
 import { useLinkWithPasskey } from "@privy-io/expo/passkey";
@@ -32,8 +31,7 @@ const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
   return x.type;
 };
 
-export const UserScreen = async () => {
-  const [password, setPassword] = useState("");
+export const UserScreen = () => {
   const [chainId, setChainId] = useState("1");
   const [signedMessages, setSignedMessages] = useState<string[]>([]);
 
@@ -41,8 +39,6 @@ export const UserScreen = async () => {
   const { linkWithPasskey } = useLinkWithPasskey();
   const oauth = useLinkWithOAuth();
   const { wallets, create } = useEmbeddedEthereumWallet();
-  const { recover } = useRecoverEmbeddedWallet();
-  const embeddedWalletProvider = await wallets[0]?.getProvider();
   const account = getUserEmbeddedEthereumWallet(user);
 
   const signMessage = useCallback(
@@ -102,11 +98,6 @@ export const UserScreen = async () => {
           </View>
         ))}
       </View>
-      <TextInput
-        value={password}
-        onChangeText={setPassword}
-        placeholder="Password"
-      />
 
       <ScrollView style={{ borderColor: "rgba(0,0,0,0.1)", borderWidth: 1 }}>
         <View
@@ -152,12 +143,8 @@ export const UserScreen = async () => {
 
             <Button title="Create Wallet" onPress={() => create()} />
 
-            <Button
-              title="Sign Message"
-              onPress={async () => signMessage(embeddedWalletProvider)}
-            />
-
             <>
+              <Text>Chain ID to set to:</Text>
               <TextInput
                 value={chainId}
                 onChangeText={setChainId}
@@ -165,19 +152,20 @@ export const UserScreen = async () => {
               />
               <Button
                 title="Switch Chain"
-                onPress={() => switchChain(embeddedWalletProvider, chainId)}
+                onPress={async () =>
+                  switchChain(await wallets[0].getProvider(), chainId)
+                }
               />
             </>
-
-            <Button
-              title="Recover Wallet"
-              onPress={() =>
-                recover({ recoveryMethod: "user-passcode", password })
-              }
-            />
           </View>
 
           <View style={{ display: "flex", flexDirection: "column" }}>
+            <Button
+              title="Sign Message"
+              onPress={async () => signMessage(await wallets[0].getProvider())}
+            />
+
+            <Text>Messages signed:</Text>
             {signedMessages.map((m) => (
               <React.Fragment key={m}>
                 <Text

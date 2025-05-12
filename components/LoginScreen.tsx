@@ -1,9 +1,6 @@
 import { Button, Linking, Text, View } from "react-native";
-import {
-  LoginWithOAuthInput,
-  useLoginWithOAuth,
-  useLogin,
-} from "@privy-io/expo";
+import { LoginWithOAuthInput, useLoginWithOAuth } from "@privy-io/expo";
+import { useLogin } from "@privy-io/expo/ui";
 import { useLoginWithPasskey } from "@privy-io/expo/passkey";
 import Constants from "expo-constants";
 import { useState } from "react";

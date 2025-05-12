@@ -1,19 +1,22 @@
-const { getDefaultConfig, mergeConfig } = require("@expo/metro-config");
+// Learn more https://docs.expo.io/guides/customizing-metro
+const { getDefaultConfig } = require("expo/metro-config");
 
-/**
- * Metro configuration
- * https://metrobundler.dev/docs/configuration
- *
- * @type {import('metro-config').MetroConfig}
- */
+/** @type {import('expo/metro-config').MetroConfig} */
 const config = getDefaultConfig(__dirname);
-const modulesToEnableExports = ["@privy-io/expo", "@privy-io/expo/passkey"];
 
 const resolveRequestWithPackageExports = (context, moduleName, platform) => {
-  if (modulesToEnableExports.includes(moduleName)) {
+  if (moduleName.startsWith("zustand")) {
     const ctx = {
       ...context,
-      unstable_enablePackageExports: true,
+      unstable_enablePackageExports: false,
+    };
+    return ctx.resolveRequest(ctx, moduleName, platform);
+  }
+
+  if (moduleName === "jose") {
+    const ctx = {
+      ...context,
+      unstable_conditionNames: ["browser"],
     };
     return ctx.resolveRequest(ctx, moduleName, platform);
   }

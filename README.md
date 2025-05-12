@@ -53,11 +53,11 @@ This demonstrates a minimal working installation of the privy sdk in a fresh exp
 
 ```sh
 # expo go
-npx expo start
+npm run start
 
 # ios
-npx expo run:ios
+npm run ios
 
 # android
-npx expo run:android
+npm run android
 ```

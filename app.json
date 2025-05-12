@@ -30,11 +30,6 @@
       },
       "package": "dev.privy.example"
     },
-    "web": {
-      "bundler": "metro",
-      "output": "static",
-      "favicon": "./assets/images/favicon.png"
-    },
     "extra": {
       "privyAppId": "<your-privy-app-id>",
       "privyClientId": "<your-privy-app-client-id>",
@@ -51,7 +46,7 @@
             "deploymentTarget": "17.5"
           },
           "android": {
-            "compileSdkVersion": 34
+            "compileSdkVersion": 35
           }
         }
       ],

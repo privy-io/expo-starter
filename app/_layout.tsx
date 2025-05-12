@@ -1,6 +1,7 @@
 import Constants from "expo-constants";
 import { Stack } from "expo-router";
-import { PrivyProvider, PrivyElements } from "@privy-io/expo";
+import { PrivyProvider } from "@privy-io/expo";
+import { PrivyElements } from "@privy-io/expo/ui";
 import {
   Inter_400Regular,
   Inter_500Medium,

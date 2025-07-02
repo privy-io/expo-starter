@@ -117,9 +117,9 @@ export const UserScreen = () => {
             <Text style={{ fontWeight: "bold" }}>Linked accounts</Text>
             {user?.linked_accounts.length ? (
               <View style={{ display: "flex", flexDirection: "column" }}>
-                {user?.linked_accounts?.map((m) => (
+                {user?.linked_accounts?.map((m, index) => (
                   <Text
-                    key={m.verified_at}
+                    key={`linked-account-${m.type}-${m.verified_at}-${index}`}
                     style={{
                       color: "rgba(0,0,0,0.5)",
                       fontSize: 12,

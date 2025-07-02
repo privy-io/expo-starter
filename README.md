@@ -7,7 +7,7 @@ This demonstrates a minimal working installation of the privy sdk in a fresh exp
 1. Install dependencies
 
    ```sh
-   npm i
+   yarn
    ```
 
 2. Configure an app client in your [Dashboard](https://dashboard.privy.io/apps?page=settings&setting=clients), and add your Privy app ID and app client ID in `app.json`
@@ -53,11 +53,11 @@ This demonstrates a minimal working installation of the privy sdk in a fresh exp
 
 ```sh
 # expo go
-npm run start
+yarn run start
 
 # ios
-npm run ios
+yarn run ios
 
 # android
-npm run android
+yarn run android
 ```

@@ -12,9 +12,10 @@
     "@ethersproject/shims": "^5.8.0",
     "@expo-google-fonts/inter": "^0.3.0",
     "@expo/vector-icons": "^14.1.0",
-    "@privy-io/expo": "^0.53.1",
+    "@privy-io/expo": "^0.55.4",
     "@privy-io/expo-native-extensions": "^0.0.5",
     "@react-navigation/native": "^7.1.6",
+    "buffer": "^6.0.3",
     "expo": "~53.0.9",
     "expo-apple-authentication": "~7.2.4",
     "expo-application": "~6.1.4",
@@ -42,14 +43,15 @@
     "react-native-screens": "~4.10.0",
     "react-native-svg": "15.11.2",
     "react-native-webview": "13.13.5",
-    "viem": "^2.29.2"
+    "viem": "^2.31.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
     "@types/react": "~19.0.10",
-    "typescript": "~5.8.3",
     "eslint": "^9.25.0",
-    "eslint-config-expo": "~9.2.0"
+    "eslint-config-expo": "~9.2.0",
+    "typescript": "~5.8.3"
   },
-  "private": true
+  "private": true,
+  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
 }

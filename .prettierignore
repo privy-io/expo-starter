@@ -1,0 +1,24 @@
+# Dependencies
+node_modules/
+.yarn/
+
+# Expo
+.expo/
+dist/
+
+# Build
+android/
+ios/
+build/
+
+# Misc
+.DS_Store
+*.pem
+*.log
+
+# Lock files
+yarn.lock
+package-lock.json
+
+# Generated files
+*.generated.*

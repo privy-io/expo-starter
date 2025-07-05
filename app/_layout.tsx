@@ -1,3 +1,4 @@
+import '../global.css';
 import Constants from "expo-constants";
 import { Stack } from "expo-router";
 import { PrivyProvider } from "@privy-io/expo";

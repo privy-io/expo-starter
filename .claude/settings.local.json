@@ -5,7 +5,11 @@
       "Bash(mv components/LoginScreen.tsx src/features/authentication/components/)",
       "Bash(mv:*)",
       "Bash(rmdir:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git commit:*)",
+      "Bash(npm install:*)",
+      "Bash(npx:*)",
+      "WebFetch(domain:www.reactnativereusables.com)"
     ],
     "deny": []
   }

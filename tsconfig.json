@@ -19,7 +19,8 @@
       "@/shared/*": ["./src/shared/*"],
       "@/store": ["./src/store"],
       "@/types": ["./src/types"],
-      "@/navigation": ["./src/navigation"]
+      "@/navigation": ["./src/navigation"],
+      "~/*": ["./src/*"]
     }
   },
   "include": [

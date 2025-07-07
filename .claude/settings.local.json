@@ -10,7 +10,9 @@
       "Bash(npm install:*)",
       "Bash(npx:*)",
       "WebFetch(domain:www.reactnativereusables.com)",
-      "Bash(rm:*)"
+      "Bash(rm:*)",
+      "Bash(find:*)",
+      "Bash(ls:*)"
     ],
     "deny": []
   }

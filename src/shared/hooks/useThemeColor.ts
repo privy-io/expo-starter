@@ -4,12 +4,31 @@
  */
 
 import { useColorScheme } from 'react-native';
+import { Colors } from '@/shared/constants';
 
-import { Colors } from '@/constants/Colors';
+// Theme-aware color mapping
+const themeColors = {
+  light: {
+    text: Colors.foreground,
+    background: Colors.background,
+    tint: Colors.primary,
+    icon: Colors.gray[600],
+    tabIconDefault: Colors.gray[600],
+    tabIconSelected: Colors.primary,
+  },
+  dark: {
+    text: '#ECEDEE',
+    background: '#151718',
+    tint: '#fff',
+    icon: '#9BA1A6',
+    tabIconDefault: '#9BA1A6',
+    tabIconSelected: '#fff',
+  },
+} as const;
 
 export function useThemeColor(
   props: { light?: string; dark?: string },
-  colorName: keyof typeof Colors.light & keyof typeof Colors.dark
+  colorName: keyof typeof themeColors.light & keyof typeof themeColors.dark
 ) {
   const theme = useColorScheme() ?? 'light';
   const colorFromProps = props[theme];
@@ -17,6 +36,6 @@ export function useThemeColor(
   if (colorFromProps) {
     return colorFromProps;
   } else {
-    return Colors[theme][colorName];
+    return themeColors[theme][colorName];
   }
 }

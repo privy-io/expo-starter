@@ -10,7 +10,12 @@ import {
 } from "@privy-io/expo";
 import Constants from "expo-constants";
 import { useLinkWithPasskey } from "@privy-io/expo/passkey";
-import { PrivyUser } from "@privy-io/public-api";
+import { PrivyUser, WalletAddress } from "@privy-io/public-api";
+import LinkAccounts from "./userManagement/LinkAccounts";
+import UnlinkAccounts from "./userManagement/UnlinkAccounts";
+import Wallets from "./userManagement/Wallets";
+import SolanaWalletActions from "./walletActions/SolanaWalletActions";
+import EVMWalletActions from "./walletActions/EVMWalletActions";
 
 const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
   if (x.type === "phone") {
@@ -78,27 +83,10 @@ export const UserScreen = () => {
   }
 
   return (
-    <View>
-      <Button
-        title="Link Passkey"
-        onPress={() =>
-          linkWithPasskey({
-            relyingParty: Constants.expoConfig?.extra?.passkeyAssociatedDomain,
-          })
-        }
-      />
-      <View style={{ display: "flex", flexDirection: "column", margin: 10 }}>
-        {(["github", "google", "discord", "apple"] as const).map((provider) => (
-          <View key={provider}>
-            <Button
-              title={`Link ${provider}`}
-              disabled={oauth.state.status === "loading"}
-              onPress={() => oauth.link({ provider })}
-            ></Button>
-          </View>
-        ))}
-      </View>
-
+    <ScrollView>
+      <LinkAccounts />
+      <UnlinkAccounts />
+      <Wallets />
       <ScrollView style={{ borderColor: "rgba(0,0,0,0.1)", borderWidth: 1 }}>
         <View
           style={{
@@ -141,8 +129,6 @@ export const UserScreen = () => {
               </>
             )}
 
-            <Button title="Create Wallet" onPress={() => create()} />
-
             <>
               <Text>Chain ID to set to:</Text>
               <TextInput
@@ -159,37 +145,11 @@ export const UserScreen = () => {
             </>
           </View>
 
-          <View style={{ display: "flex", flexDirection: "column" }}>
-            <Button
-              title="Sign Message"
-              onPress={async () => signMessage(await wallets[0].getProvider())}
-            />
-
-            <Text>Messages signed:</Text>
-            {signedMessages.map((m) => (
-              <React.Fragment key={m}>
-                <Text
-                  style={{
-                    color: "rgba(0,0,0,0.5)",
-                    fontSize: 12,
-                    fontStyle: "italic",
-                  }}
-                >
-                  {m}
-                </Text>
-                <View
-                  style={{
-                    marginVertical: 5,
-                    borderBottomWidth: 1,
-                    borderBottomColor: "rgba(0,0,0,0.2)",
-                  }}
-                />
-              </React.Fragment>
-            ))}
-          </View>
+          <SolanaWalletActions />
+          <EVMWalletActions />
           <Button title="Logout" onPress={logout} />
         </View>
       </ScrollView>
-    </View>
+    </ScrollView>
   );
 };

@@ -26,33 +26,41 @@ export default function SolanaWalletActions() {
   };
 
   const signTransaction = async () => {
-    if (!wallet?.getProvider) return;
-    const provider = await wallet.getProvider?.();
-    if (!provider) return;
+    try {
+      if (!wallet?.getProvider) return;
+      const provider = await wallet.getProvider?.();
+      if (!provider) return;
 
-    const transaction = new Transaction();
-    // Sign the transaction
-    const { signedTransaction } = await provider.request({
-      method: "signTransaction",
-      params: { transaction },
-    });
-    setResult(JSON.stringify(signedTransaction));
+      const transaction = new Transaction();
+      // Sign the transaction
+      const { signedTransaction } = await provider.request({
+        method: "signTransaction",
+        params: { transaction },
+      });
+      setResult(JSON.stringify(signedTransaction));
+    } catch (err: any) {
+      setResult(err?.message ?? String(err));
+    }
   };
 
   const signAndSendTransaction = async () => {
-    if (!wallet?.getProvider) return;
-    const provider = await wallet.getProvider?.();
-    if (!provider) return;
-    const transaction = new Transaction();
-    const connection = new Connection("https://api.mainnet-beta.solana.com");
-    const { signature } = await provider.request({
-      method: "signAndSendTransaction",
-      params: {
-        transaction: transaction,
-        connection: connection,
-      },
-    });
-    setResult(signature);
+    try {
+      if (!wallet?.getProvider) return;
+      const provider = await wallet.getProvider?.();
+      if (!provider) return;
+      const transaction = new Transaction();
+      const connection = new Connection("https://api.mainnet-beta.solana.com");
+      const { signature } = await provider.request({
+        method: "signAndSendTransaction",
+        params: {
+          transaction: transaction,
+          connection: connection,
+        },
+      });
+      setResult(signature);
+    } catch (err: any) {
+      setResult(err?.message ?? String(err));
+    }
   };
   return (
     <View>

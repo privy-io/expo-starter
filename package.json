@@ -15,6 +15,7 @@
     "@privy-io/expo": "^0.58.1",
     "@privy-io/expo-native-extensions": "^0.0.5",
     "@react-navigation/native": "^7.1.6",
+    "@solana/web3.js": "^1.98.4",
     "buffer": "^6.0.3",
     "expo": "~53.0.9",
     "expo-apple-authentication": "~7.2.4",
@@ -55,6 +56,5 @@
     "eslint-config-expo": "~9.2.0",
     "typescript": "~5.8.3"
   },
-  "private": true,
-  "packageManager": "yarn@1.22.22+sha1.ac34549e6aa8e7ead463a7407e1c7390f61a6610"
+  "private": true
 }

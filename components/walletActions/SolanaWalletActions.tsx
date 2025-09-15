@@ -2,7 +2,12 @@ import { useEmbeddedSolanaWallet } from "@privy-io/expo";
 import { View, Text, Button } from "react-native";
 import { useState } from "react";
 
-import { Connection, Transaction } from "@solana/web3.js";
+import {
+  Connection,
+  PublicKey,
+  SystemProgram,
+  Transaction,
+} from "@solana/web3.js";
 
 export default function SolanaWalletActions() {
   const { wallets } = useEmbeddedSolanaWallet();
@@ -32,6 +37,20 @@ export default function SolanaWalletActions() {
       if (!provider) return;
 
       const transaction = new Transaction();
+      const connection = new Connection("https://api.mainnet-beta.solana.com");
+      transaction.recentBlockhash = (
+        await connection.getLatestBlockhash("finalized")
+      ).blockhash;
+      transaction.feePayer = new PublicKey(wallet.publicKey);
+      transaction.add(
+        SystemProgram.transfer({
+          fromPubkey: new PublicKey(wallet.publicKey),
+          toPubkey: new PublicKey(
+            "So11111111111111111111111111111111111111112", // Replace with a valid recipient address
+          ),
+          lamports: 1000, // Amount in lamports (1 SOL = 1,000,000,000 lamports)
+        }),
+      );
       // Sign the transaction
       const { signedTransaction } = await provider.request({
         method: "signTransaction",
@@ -50,6 +69,19 @@ export default function SolanaWalletActions() {
       if (!provider) return;
       const transaction = new Transaction();
       const connection = new Connection("https://api.mainnet-beta.solana.com");
+      transaction.recentBlockhash = (
+        await connection.getLatestBlockhash("finalized")
+      ).blockhash;
+      transaction.feePayer = new PublicKey(wallet.publicKey);
+      transaction.add(
+        SystemProgram.transfer({
+          fromPubkey: new PublicKey(wallet.publicKey),
+          toPubkey: new PublicKey(
+            "So11111111111111111111111111111111111111112", // Replace with a valid recipient address
+          ),
+          lamports: 1000, // Amount in lamports (1 SOL = 1,000,000,000 lamports)
+        }),
+      );
       const { signature } = await provider.request({
         method: "signAndSendTransaction",
         params: {

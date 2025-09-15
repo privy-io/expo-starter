@@ -14,7 +14,7 @@ export default function Wallets() {
   const { create: createSolanaWallet } = useEmbeddedSolanaWallet();
   const { createWallet } = useCreateWallet();
   const wallets = user?.linked_accounts.filter(
-    (account) => account.type === "wallet"
+    (account) => account.type === "wallet",
   );
 
   type ExtendedChainType =
@@ -81,8 +81,9 @@ export default function Wallets() {
           flexWrap: "wrap",
         }}
       >
-        {ALL_CHAIN_TYPES.map((chainType) => (
+        {ALL_CHAIN_TYPES.map((chainType, i) => (
           <Button
+            key={`create-wallet-${chainType}-${i}`}
             title={`Create ${chainType} Wallet`}
             onPress={() => createWallets(chainType)}
           />

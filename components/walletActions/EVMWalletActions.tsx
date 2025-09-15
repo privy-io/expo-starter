@@ -8,18 +8,18 @@ export default function EVMWalletActions() {
   const wallet = wallets?.[0];
 
   const signMessage = async () => {
-    const provider = await wallet.getProvider?.();
+    const provider = await wallet?.getProvider?.();
     if (!provider) return;
 
     const message = "Hello World";
     const signature = await provider.request({
       method: "personal_sign",
-      params: [message, wallet.address],
+      params: [message, wallet?.address],
     });
     setResult(signature);
   };
   const signTransaction = async () => {
-    const provider = await wallet.getProvider?.();
+    const provider = await wallet?.getProvider?.();
     if (!provider) return;
 
     // Sign transaction (will be signed and populated)
@@ -40,7 +40,7 @@ export default function EVMWalletActions() {
     }
   };
   const signAndSendTransaction = async () => {
-    const provider = await wallet.getProvider?.();
+    const provider = await wallet?.getProvider?.();
     if (!provider) return;
     const response = await provider.request({
       method: "eth_sendTransaction",

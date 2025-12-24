@@ -33,7 +33,8 @@
     "extra": {
       "privyAppId": "<your-privy-app-id>",
       "privyClientId": "<your-privy-app-client-id>",
-      "passkeyAssociatedDomain": "https://<your-associated-domain>"
+      "passkeyAssociatedDomain": "https://<your-associated-domain>",
+      "stripePublishableKey": "<your-stripe-publishable-key>"
     },
     "plugins": [
       "expo-router",
@@ -50,7 +51,15 @@
           }
         }
       ],
-      "expo-font"
+      "expo-font",
+      [
+        "@stripe/stripe-react-native",
+        {
+          "merchantIdentifier": "merchant.dev.privy.example",
+          "enableGooglePay": false,
+          "includeOnramp": true
+        }
+      ]
     ],
     "experiments": {
       "typedRoutes": true

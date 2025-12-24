@@ -16,6 +16,7 @@
     "@privy-io/expo-native-extensions": "^0.0.5",
     "@react-navigation/native": "^7.1.6",
     "@solana/web3.js": "^1.98.4",
+    "@stripe/stripe-react-native": "0.52.0-crypto-onramp-2-private-beta",
     "buffer": "^6.0.3",
     "expo": "~53.0.9",
     "expo-apple-authentication": "~7.2.4",

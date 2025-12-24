@@ -22,7 +22,13 @@ import type {
 const app = express();
 
 // Middleware
-app.use(cors());
+// Restrictive CORS policy: only allow specific trusted origins
+// Update the origins array when deploying to new trusted environments
+app.use(cors({
+  origin: ['https://example.com', 'http://localhost:3000'],
+  // If you need cookies or credentials, uncomment the line below
+  // credentials: true,
+}));
 app.use(express.json());
 
 // Configuration

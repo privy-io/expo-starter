@@ -16,6 +16,7 @@ import UnlinkAccounts from "./userManagement/UnlinkAccounts";
 import Wallets from "./userManagement/Wallets";
 import SolanaWalletActions from "./walletActions/SolanaWalletActions";
 import EVMWalletActions from "./walletActions/EVMWalletActions";
+import StripeOnramp from "./funding/StripeOnramp";
 
 const toMainIdentifier = (x: PrivyUser["linked_accounts"][number]) => {
   if (x.type === "phone") {
@@ -147,6 +148,7 @@ export const UserScreen = () => {
 
           <SolanaWalletActions />
           <EVMWalletActions />
+          <StripeOnramp />
           <Button title="Logout" onPress={logout} />
         </View>
       </ScrollView>

@@ -1,5 +1,7 @@
 # Privy Expo Starter
 
+> **This repository is archived.** For up-to-date examples, please visit [github.com/privy-io/examples](https://github.com/privy-io/examples).
+
 This demonstrates a minimal working installation of the privy sdk in a fresh expo app. We recommend reading the [documentation](https://docs.privy.io/guide/expo/dashboard) for a more detailed guide.
 
 ## Setup
